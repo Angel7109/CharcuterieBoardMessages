@@ -2,11 +2,17 @@ let ALL_QUOTES = [];
 let activeQuotes = [];
 let pool = []; // shuffled indexes (no-repeat until cycle ends)
 let quoteDisplayed = false;
+let isLoading = true;
 
 const btn = document.getElementById("getMsgBtn");
 const quoteBox = document.getElementById("quoteBox");
 const quoteText = document.getElementById("quoteText");
 const quoteAuthor = document.getElementById("quoteAuthor");
+const defaultBtnText = btn.textContent;
+
+btn.disabled = true;
+btn.setAttribute("aria-disabled", "true");
+btn.textContent = "Loading...";
 
 function shuffle(array) {
   // Fisher-Yates shuffle
@@ -31,13 +37,14 @@ function lockButton() {
 
 function showNextQuote() {
   if (quoteDisplayed) return;
-  quoteDisplayed = true;
+  if (isLoading) return;
 
   if (activeQuotes.length === 0) {
     quoteText.textContent =
       "No quotes found. Make sure quotes.json has at least 1 quote.";
     quoteAuthor.textContent = "";
     quoteBox.hidden = false;
+    quoteDisplayed = true;
     lockButton();
     return;
   }
@@ -53,6 +60,7 @@ function showNextQuote() {
   quoteAuthor.textContent = q.author ? `- ${q.author}` : "- Unknown";
 
   quoteBox.hidden = false;
+  quoteDisplayed = true;
   lockButton();
 }
 
@@ -69,11 +77,17 @@ async function init() {
     );
 
     resetPool();
+    isLoading = false;
+    btn.disabled = false;
+    btn.removeAttribute("aria-disabled");
+    btn.textContent = defaultBtnText;
   } catch (err) {
     quoteText.textContent =
       "Error loading quotes. Ensure quotes.json is in the same folder as index.html.";
     quoteAuthor.textContent = "";
     quoteBox.hidden = false;
+    quoteDisplayed = true;
+    lockButton();
   }
 }
 
