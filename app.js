@@ -1,12 +1,12 @@
 let ALL_QUOTES = [];
 let activeQuotes = [];
 let pool = []; // shuffled indexes (no-repeat until cycle ends)
+let quoteDisplayed = false;
 
 const btn = document.getElementById("getMsgBtn");
 const quoteBox = document.getElementById("quoteBox");
 const quoteText = document.getElementById("quoteText");
 const quoteAuthor = document.getElementById("quoteAuthor");
-const quoteMeta = document.getElementById("quoteMeta");
 
 function shuffle(array) {
   // Fisher-Yates shuffle
@@ -22,13 +22,23 @@ function resetPool() {
   pool = shuffle(activeQuotes.map((_, idx) => idx));
 }
 
+function lockButton() {
+  btn.disabled = true;
+  btn.setAttribute("aria-disabled", "true");
+  btn.removeEventListener("click", showNextQuote);
+  btn.hidden = true;
+}
+
 function showNextQuote() {
+  if (quoteDisplayed) return;
+  quoteDisplayed = true;
+
   if (activeQuotes.length === 0) {
     quoteText.textContent =
       "No quotes found. Make sure quotes.json has at least 1 quote.";
     quoteAuthor.textContent = "";
-    quoteMeta.textContent = "";
     quoteBox.hidden = false;
+    lockButton();
     return;
   }
 
@@ -40,14 +50,10 @@ function showNextQuote() {
   const q = activeQuotes[idx];
 
   quoteText.textContent = q.text;
-  quoteAuthor.textContent = q.author ? `— ${q.author}` : "— Unknown";
-
-  const cat = q.category ? `Category: ${q.category}` : "Category: (none)";
-  const remaining = pool.length;
-  quoteMeta.textContent = `${cat} • Remaining in cycle: ${remaining}`;
+  quoteAuthor.textContent = q.author ? `- ${q.author}` : "- Unknown";
 
   quoteBox.hidden = false;
-  btn.textContent = "Get another motivational message";
+  lockButton();
 }
 
 async function init() {
@@ -63,15 +69,10 @@ async function init() {
     );
 
     resetPool();
-
-    // Auto-show for QR scans if URL has ?auto=1
-    const params = new URLSearchParams(window.location.search);
-    if (params.get("auto") === "1") showNextQuote();
   } catch (err) {
     quoteText.textContent =
       "Error loading quotes. Ensure quotes.json is in the same folder as index.html.";
     quoteAuthor.textContent = "";
-    quoteMeta.textContent = String(err);
     quoteBox.hidden = false;
   }
 }

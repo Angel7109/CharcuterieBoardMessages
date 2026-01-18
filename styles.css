@@ -75,21 +75,11 @@ button:hover {
   font-weight: 600;
 }
 
-.meta {
-  margin: 0;
-  color: var(--muted);
-  font-size: 0.95rem;
-}
-
 .footer {
   margin-top: 18px;
   color: var(--muted);
   font-size: 0.9rem;
   text-align: center;
-}
-
-.tip {
-  margin: 0 0 10px;
 }
 
 .disclaimer {
