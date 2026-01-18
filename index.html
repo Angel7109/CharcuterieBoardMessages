@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Candy Charcuterie Motivation</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body>
+    <main class="card">
+      <h1>🍫 Candy Charcuterie Motivation</h1>
+      <p class="subtitle">Tap the button to receive a random motivational message.</p>
+
+      <button id="getMsgBtn">Get your charcuterie motivational message</button>
+
+      <section id="quoteBox" class="quote-box" aria-live="polite" hidden>
+        <p id="quoteText" class="quote"></p>
+        <p id="quoteAuthor" class="author"></p>
+        <p id="quoteMeta" class="meta"></p>
+      </section>
+
+      <div class="footer">
+        <p class="tip">
+          Tip: add <code>?auto=1</code> to the URL to show a quote immediately after scan.
+        </p>
+
+        <p class="disclaimer">
+          Reference list:
+          <a
+            href="https://www.shopify.com/blog/motivational-quotes#1"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Shopify — “Motivational Quotes” (Michael Keenan; updated by Joe Hitchcock, Dec 5, 2025)
+          </a>.
+          Quotes are attributed to their respective speakers/authors.
+        </p>
+      </div>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
